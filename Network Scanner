@@ -1,0 +1,12 @@
+import scapy.all as scapy
+
+def scan(ip):
+    arp_request = scapy.ARP(pdst=ip)
+    broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+    answered = scapy.srp(broadcast/arp_request, timeout=1, verbose=False)[0]
+
+    for sent, received in answered:
+        print(f"IP: {received.psrc} | MAC: {received.hwsrc}")
+
+if __name__ == "__main__":
+    scan("192.168.1.1/24")
